@@ -14,9 +14,10 @@ type Migrator struct {
 }
 
 var typeAliasMap = map[string][]string{
-	"nchar":       {"varchar2"},
-	"longvarchar": {"clob"},
-	"number":      {"smallint", "float", "integer"},
+	"nchar":           {"varchar2"},
+	"longvarchar":     {"clob"},
+	"number":          {"smallint", "float", "integer"},
+	"timestamptz_dty": {"timestamp"},
 }
 
 func (m Migrator) GetTypeAliases(databaseTypeName string) []string {
