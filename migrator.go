@@ -18,6 +18,7 @@ var typeAliasMap = map[string][]string{
 	"longvarchar":     {"clob"},
 	"number":          {"smallint", "float", "integer"},
 	"timestamptz_dty": {"timestamp"},
+	"longraw":         {"blob"},
 }
 
 func (m Migrator) GetTypeAliases(databaseTypeName string) []string {
