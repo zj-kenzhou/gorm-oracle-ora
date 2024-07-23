@@ -3,10 +3,11 @@ package oracle
 import (
 	"database/sql"
 	"fmt"
-	"gorm.io/gorm/utils"
 	"regexp"
 	"strconv"
 	"strings"
+
+	"gorm.io/gorm/utils"
 
 	_ "github.com/sijms/go-ora/v2"
 	"github.com/thoas/go-funk"
@@ -170,21 +171,21 @@ func (d Dialector) DataTypeOf(field *schema.Field) string {
 		}
 	case schema.String, "VARCHAR2":
 		size := field.Size
-		defaultSize := d.DefaultStringSize
+		// defaultSize := d.DefaultStringSize
 
 		if size == 0 {
-			if defaultSize > 0 {
-				size = int(defaultSize)
-			} else {
-				hasIndex := field.TagSettings["INDEX"] != "" || field.TagSettings["UNIQUE"] != ""
-				// TEXT, GEOMETRY or JSON column can't have a default value
-				if field.PrimaryKey || field.HasDefaultValue || hasIndex {
-					size = 191 // utf8mb4
-				}
+			// if defaultSize > 0 {
+			// 	size = int(defaultSize)
+			// } else {
+			hasIndex := field.TagSettings["INDEX"] != "" || field.TagSettings["UNIQUE"] != ""
+			// TEXT, GEOMETRY or JSON column can't have a default value
+			if field.PrimaryKey || field.HasDefaultValue || hasIndex {
+				size = 191 // utf8mb4
 			}
+			// }
 		}
 
-		if size >= 2000 {
+		if size == 0 || size >= 2000 {
 			sqlType = "CLOB"
 		} else {
 			sqlType = fmt.Sprintf("VARCHAR2(%d)", size)

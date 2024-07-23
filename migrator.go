@@ -13,6 +13,14 @@ type Migrator struct {
 	migrator.Migrator
 }
 
+var typeAliasMap = map[string][]string{
+	"nchar": {"varchar2"},
+}
+
+func (m Migrator) GetTypeAliases(databaseTypeName string) []string {
+	return typeAliasMap[databaseTypeName]
+}
+
 func (m Migrator) CurrentDatabase() (name string) {
 	m.DB.Raw(
 		fmt.Sprintf(`SELECT ORA_DATABASE_NAME as "Current Database" FROM %s`, m.Dialector.(Dialector).DummyTableName()),
