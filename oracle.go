@@ -79,20 +79,20 @@ func (d Dialector) ClauseBuilders() map[string]clause.ClauseBuilder {
 
 func (d Dialector) RewriteLimit(c clause.Clause, builder clause.Builder) {
 	if limit, ok := c.Expression.(clause.Limit); ok {
-		if stmt, ok := builder.(*gorm.Statement); ok {
-			if _, ok := stmt.Clauses["ORDER BY"]; !ok {
-				s := stmt.Schema
-				builder.WriteString("ORDER BY ")
-				if s != nil && s.PrioritizedPrimaryField != nil {
-					builder.WriteQuoted(s.PrioritizedPrimaryField.DBName)
-					builder.WriteByte(' ')
-				} else {
-					builder.WriteString("(SELECT NULL FROM ")
-					builder.WriteString(d.DummyTableName())
-					builder.WriteString(")")
-				}
-			}
-		}
+		// if stmt, ok := builder.(*gorm.Statement); ok {
+		// 	if _, ok := stmt.Clauses["ORDER BY"]; !ok {
+		// 		s := stmt.Schema
+		// 		builder.WriteString("ORDER BY ")
+		// 		if s != nil && s.PrioritizedPrimaryField != nil {
+		// 			builder.WriteQuoted(s.PrioritizedPrimaryField.DBName)
+		// 			builder.WriteByte(' ')
+		// 		} else {
+		// 			builder.WriteString("(SELECT NULL FROM ")
+		// 			builder.WriteString(d.DummyTableName())
+		// 			builder.WriteString(")")
+		// 		}
+		// 	}
+		// }
 
 		if offset := limit.Offset; offset > 0 {
 			builder.WriteString(" OFFSET ")
